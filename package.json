@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+     "jest": "^29.7.0"
+  },
+  "dependencies": {
+  },
+  "scripts": {
+     "start": "node server.js",
+     "test": "jest",
+     "test:coverage": "jest --coverage"
+  }
+}
