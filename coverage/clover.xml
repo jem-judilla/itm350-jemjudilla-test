@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1728460034802" clover="3.2.0">
+  <project timestamp="1728460034802" name="All files">
+    <metrics statements="23" coveredstatements="23" conditionals="4" coveredconditionals="4" methods="14" coveredmethods="14" elements="41" coveredelements="41" complexity="0" loc="23" ncloc="23" packages="1" files="9" classes="9"/>
+    <file name="collection-management.js" path="C:\Users\Windows 10\source\repos\itm350-jemjudilla-test\src\collection-management.js">
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="2" count="1" type="stmt"/>
+      <line num="5" count="1" type="stmt"/>
+    </file>
+    <file name="data-driven.js" path="C:\Users\Windows 10\source\repos\itm350-jemjudilla-test\src\data-driven.js">
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="2" count="4" type="stmt"/>
+      <line num="5" count="1" type="stmt"/>
+    </file>
+    <file name="firstunittest.js" path="C:\Users\Windows 10\source\repos\itm350-jemjudilla-test\src\firstunittest.js">
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="3" count="4" type="stmt"/>
+      <line num="5" count="1" type="stmt"/>
+    </file>
+    <file name="multithreading.js" path="C:\Users\Windows 10\source\repos\itm350-jemjudilla-test\src\multithreading.js">
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+      <line num="2" count="5" type="stmt"/>
+      <line num="5" count="1" type="stmt"/>
+    </file>
+    <file name="pass-fail.js" path="C:\Users\Windows 10\source\repos\itm350-jemjudilla-test\src\pass-fail.js">
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="2" count="3" type="stmt"/>
+      <line num="5" count="1" type="stmt"/>
+    </file>
+    <file name="performance.js" path="C:\Users\Windows 10\source\repos\itm350-jemjudilla-test\src\performance.js">
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+      <line num="2" count="1" type="stmt"/>
+      <line num="5" count="1" type="stmt"/>
+    </file>
+    <file name="process.js" path="C:\Users\Windows 10\source\repos\itm350-jemjudilla-test\src\process.js">
+      <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <line num="1" count="1" type="stmt"/>
+      <line num="4" count="1" type="stmt"/>
+      <line num="7" count="1" type="stmt"/>
+    </file>
+    <file name="simulation.js" path="C:\Users\Windows 10\source\repos\itm350-jemjudilla-test\src\simulation.js">
+      <metrics statements="4" coveredstatements="4" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
+      <line num="2" count="4" type="cond" truecount="4" falsecount="0"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="6" count="3" type="stmt"/>
+      <line num="9" count="1" type="stmt"/>
+    </file>
+    <file name="stress.js" path="C:\Users\Windows 10\source\repos\itm350-jemjudilla-test\src\stress.js">
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+      <line num="2" count="1000" type="stmt"/>
+      <line num="3" count="1000" type="stmt"/>
+      <line num="4" count="1000" type="stmt"/>
+      <line num="9" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>
