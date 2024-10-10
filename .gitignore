@@ -1,6 +1,16 @@
-
 ﻿################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-
+/.vs/itm350-jemjudilla-test/FileContentIndex/0427db73-05f5-4f06-9e10-c9d595221c0a.vsidx
+*.vsidx
+/.vs/itm350-jemjudilla-test/FileContentIndex/0f38f279-c000-47e5-a9c2-e12898862194.vsidx
+/.vs/itm350-jemjudilla-test/FileContentIndex/359d2801-bc09-456c-9b42-39ceea21e450.vsidx
+/.vs/itm350-jemjudilla-test/FileContentIndex/4c20d233-58e3-4e9d-9efb-50355feb60c7.vsidx
+/.vs/itm350-jemjudilla-test/FileContentIndex/9c6ae5cb-caa2-45a6-8d59-f5c0ebdd66ee.vsidx
+/.vs/itm350-jemjudilla-test/v17/.wsuo
+/.vs/itm350-jemjudilla-test/v17/DocumentLayout.backup.json
+/.vs/itm350-jemjudilla-test/v17/DocumentLayout.json
+/.vs/slnx.sqlite
+/.vs/VSWorkspaceState.json
+/.gitignore
