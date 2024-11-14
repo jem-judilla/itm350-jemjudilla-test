@@ -1,8 +1,13 @@
-// For every .js file in the src directory, require at least 80% line coverage.
 module.exports = {
+  collectCoverage: true,
+  coverageReporters: ["json-summary", "lcov", "text", "clover"],
+  coverageDirectory: "coverage",
   coverageThreshold: {
-    './src/*.js': {
+    global: {
+      lines: 50
+    },
+    "./src/**/*.js": {
       lines: 80
     }
   }
-}
+};
