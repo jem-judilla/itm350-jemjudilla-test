@@ -42,5 +42,7 @@ jobs:
           file: ./bb/Dockerfile
           push: true
           tag_with_sha: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ${{ steps.meta.outputs.tags }},
+            ${{ env.REPO_NAME }}:latest
           labels: ${{ steps.meta.outputs.labels }}
