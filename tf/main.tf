@@ -25,7 +25,15 @@ resource "aws_subnet" "subnet-pub1" {
 }
 
 resource "aws_subnet" "subnet-pub2" {
- TODO:
+ 
+ vpc_id                  = aws_vpc.ecs-vpc.id
+ cidr_block              = cidrsubnet(aws_vpc.ecs-vpc.cidr_block, 8, 2)
+ map_public_ip_on_launch = true
+ availability_zone       = "${var.region}b"
+ tags = {
+   Name = "${var.vpc_prefix}-public-2b"
+ }
+
 }
 
 resource "aws_subnet" "subnet-priv1" {
@@ -40,11 +48,24 @@ resource "aws_subnet" "subnet-priv1" {
 }
 
 resource "aws_subnet" "subnet-priv2" {
- TODO:
+ 
+ vpc_id                  = aws_vpc.ecs-vpc.id
+ cidr_block              = cidrsubnet(aws_vpc.ecs-vpc.cidr_block, 8, 4)
+ map_public_ip_on_launch = true
+ availability_zone       = "${var.region}b"
+ tags = {
+   Name = "${var.vpc_prefix}-private-2b"
+ }
+
 }
 
 resource "aws_internet_gateway" "internet_gateway" {
- TODO:
+ 
+  vpc_id = aws_vpc.ecs-vpc.id
+  tags = {
+   Name = "internet_gateway"
+ }
+
 }
 
 resource "aws_eip" "nat_gateway" {
@@ -52,7 +73,8 @@ resource "aws_eip" "nat_gateway" {
 }
 
 resource "aws_nat_gateway" "nat_gw" {
-  TODO:
+  allocation_id = aws_eip.nat_gateway.id  # Ensure EIP is correctly referenced
+  subnet_id     = aws_subnet.subnet-pub1.id  # Use one of your public subnets
   tags = {
     Name = "NAT_gw"
   }
@@ -63,10 +85,23 @@ resource "aws_nat_gateway" "nat_gw" {
 }
 
 resource "aws_route_table" "route_table" {
-TODO:
+
+  vpc_id = aws_vpc.ecs-vpc.id
+  route {
+   cidr_block = "0.0.0.0/0"
+   gateway_id = aws_internet_gateway.internet_gateway.id
+ }
+
 }
+
 resource "aws_route_table" "private_route_table" {
-TODO:
+
+  vpc_id = aws_vpc.ecs-vpc.id
+  route {
+   cidr_block = "0.0.0.0/0"
+   gateway_id = aws_nat_gateway.nat_gw.id
+ }
+
 }
 
 resource "aws_route_table_association" "subnet_route" {
@@ -75,27 +110,48 @@ resource "aws_route_table_association" "subnet_route" {
 }
 
 resource "aws_route_table_association" "subnet2_route" {
-TODO:
+
+ subnet_id      = aws_subnet.subnet-pub2.id
+ route_table_id = aws_route_table.route_table.id
 }
 
 resource "aws_route_table_association" "priv_subnet1_route" {
-TODO:
+
+ subnet_id      = aws_subnet.subnet-priv1.id
+ route_table_id = aws_route_table.private_route_table.id
 }
 
 resource "aws_route_table_association" "priv_subnet2_route" {
-TODO:
+
+ subnet_id      = aws_subnet.subnet-priv2.id
+ route_table_id = aws_route_table.private_route_table.id
 }
 
 resource "aws_security_group" "alb-http-sg" {
-TODO:
- tags = {
-   Name = "alb-http-sg"
+
+  ingress {
+   from_port   = 0
+   to_port     = 0
+   protocol    = -1
+   self        = "false"
+   cidr_blocks = ["0.0.0.0/0"]
+   description = "any"
  }
 
+ egress {
+   from_port   = 0
+   to_port     = 0
+   protocol    = "-1"
+   cidr_blocks = ["0.0.0.0/0"]
+ }
+  vpc_id = aws_vpc.ecs-vpc.id
+  tags = {
+   Name = "alb-http-sg"
+ }
 }
 
 resource "aws_security_group" "ecs-cluster-sg" {
-TODO:
+
   ingress {
 	    from_port   = 32153 
 	    to_port     = 65535
@@ -115,6 +171,7 @@ TODO:
       protocol    = "-1"
       cidr_blocks = ["0.0.0.0/0"]
 	}
+ vpc_id = aws_vpc.ecs-vpc.id
  tags = {
    Name = "ecs-cluster-sg"
  }
@@ -122,7 +179,7 @@ TODO:
 
 resource "aws_key_pair" "ecs-node-kp" {
   key_name   = "ecs-node-key"
-  public_key = TODO:
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDXvgjPlL91fXygBzzjQq8X02wrAn6tJTjYxgL6ntID/8Hijx5+gS7XXIUoAZo8ZsL7u5KtKPXWn3/5H0N3+vvTiw3PHSbYL7a/b1DYjlOXbFboVvNgz5t21lE4/ubDVF9+9+j1dk4+N0BKoIyZnOdfVlO5ytsnxGo8g/1Bz1GDk1pUiJC+Qs1meKgew8O7eZ1DP8UGrz+pIn5ZvrIOmkuRC2ZinEEKfL/mFM/bK4M6qQm3o8ztmBG9O9E3tIC7NIpxE8iJlqyvkCUVCycinDuY/WH5iYbgzRhcKVK3SHuKtpLCCsA3SBuveVZMxU6z5YxhBSSIuEP5jK7yLTAtlSzr myrrh@LAPTOP-363EIBH5"
 }
 
 resource "aws_launch_template" "ecs_lt" {
@@ -152,11 +209,31 @@ resource "aws_launch_template" "ecs_lt" {
 
 resource "aws_autoscaling_group" "ecs_asg" {
  vpc_zone_identifier = [aws_subnet.subnet-priv1.id, aws_subnet.subnet-priv2.id]
-TODO:
+
+
+ desired_capacity    = 2
+ max_size            = 3
+ min_size            = 1
+
+ launch_template {
+   id      = aws_launch_template.ecs_lt.id
+   version = "$Latest"
+ }
+
+ tag {
+   key                 = "AmazonECSManaged"
+   value               = true
+   propagate_at_launch = true
+ }
 }
 
 resource "aws_lb" "ecs_alb" {
-TODO:
+
+ name               = "ecs-alb"
+ internal           = false
+ load_balancer_type = "application"
+ security_groups    = [aws_security_group.alb-http-sg.id]
+ subnets            = [aws_subnet.subnet-pub1.id, aws_subnet.subnet-pub2.id]
 
  tags = {
    Name = "ecs-alb"
@@ -164,7 +241,15 @@ TODO:
 }
 
 resource "aws_lb_listener" "ecs_alb_listener" {
-TODO:
+
+ load_balancer_arn = aws_lb.ecs_alb.arn
+ port              = 80
+ protocol          = "HTTP"
+
+ default_action {
+   type             = "forward"
+   target_group_arn = aws_lb_target_group.ecs_tg.arn
+ }
 }
 
 resource "aws_lb_target_group" "ecs_tg" {
@@ -184,7 +269,19 @@ resource "aws_ecs_cluster" "ecs_cluster" {
 }
 
 resource "aws_ecs_capacity_provider" "ecs_capacity_provider" {
-TODO:
+
+ name = "test2"
+
+  auto_scaling_group_provider {
+   auto_scaling_group_arn = aws_autoscaling_group.ecs_asg.arn
+
+   managed_scaling {
+     maximum_scaling_step_size = 1000
+     minimum_scaling_step_size = 1
+     status                    = "ENABLED"
+     target_capacity           = 3
+   }
+ }
 }
 
 resource "aws_ecs_cluster_capacity_providers" "cluster-cp" {
@@ -254,4 +351,23 @@ resource "aws_ecs_service" "ecs_service" {
  }
 
  depends_on = [aws_autoscaling_group.ecs_asg]
+}
+
+resource "aws_dynamodb_table" "event-table" {
+  name           = "event"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 5
+  write_capacity = 5
+  hash_key       = "id"
+  
+
+  attribute {
+    name = "id"
+    type = "N"
+  }
+
+  tags = {
+    Name        = "event-table"
+    Environment = "production"
+  }
 }
