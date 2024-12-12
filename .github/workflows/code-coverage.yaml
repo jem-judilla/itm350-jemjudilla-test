@@ -1,0 +1,43 @@
+name: Code Coverage Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-and-coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' # Specify your Node.js version
+
+      - name: Install dependencies
+        run: |
+          npm install
+      
+      - name: Debug permissions
+        run: ls -l node_modules/.bin/
+
+      - name: Add execute permission for Jest
+        run: chmod +x ./node_modules/.bin/jest
+        
+
+      - name: Run tests with coverage
+        run: |
+          npm test -- --coverage
+
+      - name: Check coverage threshold
+        run: |
+          COVERAGE=$(jq '.total.lines.pct' coverage/coverage-summary.json)
+          if (( $(echo "$COVERAGE < 50" | bc -l) )); then
+            echo "Code coverage is below 50%!"
+            exit 1
+          fi
+        shell: bash
